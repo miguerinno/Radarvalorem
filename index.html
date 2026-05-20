@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valorem News Hub - Noticias y Tendencias</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: #ffffff;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Georgia', serif;
+            font-weight: 600;
+        }
+        
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #f0f0f0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'Georgia', serif;
+            color: #0052cc;
+        }
+        
+        nav ul {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        nav a:hover {
+            color: #0052cc;
+        }
+        
+        /* Hero Section */
+        .hero {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            color: #1a1a1a;
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            color: #666;
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background-color: #0052cc;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .cta-button:hover {
+            background-color: #0041a3;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 82, 204, 0.2);
+        }
+        
+        /* Noticias Section */
+        .noticias-section {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-header h2 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .section-header p {
+            color: #999;
+            font-size: 1.1rem;
+        }
+        
+        .noticias-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 3rem;
+        }
+        
+        .noticia-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: slideIn 0.6s ease forwards;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .noticia-card:nth-child(1) { animation-delay: 0.1s; }
+        .noticia-card:nth-child(2) { animation-delay: 0.2s; }
+        .noticia-card:nth-child(3) { animation-delay: 0.3s; }
+        .noticia-card:nth-child(4) { animation-delay: 0.4s; }
+        .noticia-card:nth-child(5) { animation-delay: 0.5s; }
+        .noticia-card:nth-child(6) { animation-delay: 0.6s; }
+        .noticia-card:nth-child(7) { animation-delay: 0.7s; }
+        .noticia-card:nth-child(8) { animation-delay: 0.8s; }
+        
+        .noticia-card:hover {
+            border-color: #ccc;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+            transform: translateY(-4px);
+        }
+        
+        .noticia-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+        
+        .noticia-card p {
+            color: #555;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            flex-grow: 1;
+        }
+        
+        .noticia-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid #f0f0f0;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            color: #999;
+        }
+        
+        .noticia-fuente {
+            font-weight: 600;
+            color: #0052cc;
+        }
+        
+        .noticia-link {
+            display: inline-block;
+            color: #0052cc;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .noticia-link:hover {
+            transform: translateX(4px);
+        }
+        
+        /* Tags */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .tag-empresa {
+            background-color: #e3f2fd;
+            color: #0052cc;
+            border: 1px solid #90caf9;
+        }
+        
+        .tag-tecnologia {
+            background-color: #f3e5f5;
+            color: #7b1fa2;
+            border: 1px solid #ce93d8;
+        }
+        
+        .tag-sector {
+            background-color: #fff3e0;
+            color: #e65100;
+            border: 1px solid #ffb74d;
+        }
+        
+        /* Insights Section */
+        .insights-section {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .insight-item {
+            padding: 2rem;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            border-left: 4px solid #0052cc;
+        }
+        
+        .insight-item h4 {
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .insight-item p {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Retos Section */
+        .retos-section {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+            border-top: 1px solid #f0f0f0;
+            background-color: #fafafa;
+        }
+        
+        .retos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        
+        .reto-item {
+            padding: 2rem;
+            background-color: #ffffff;
+            border-radius: 8px;
+            border-left: 4px solid #e65100;
+            transition: all 0.3s ease;
+        }
+        
+        .reto-item:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+        
+        .reto-item h4 {
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            color: #e65100;
+        }
+        
+        .reto-item p {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+        
+        .insight-item .tags-container {
+            margin-bottom: 0;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #f9f9f9;
+            border-top: 1px solid #e0e0e0;
+            padding: 3rem 2rem;
+            margin-top: 6rem;
+        }
+        
+        .footer-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            text-align: center;
+            color: #666;
+        }
+        
+        .footer-content p {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            nav ul {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .noticias-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .insights-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem 1rem;
+            }
+            
+            .noticia-card {
+                padding: 1.5rem;
+            }
+            
+            .tags-container {
+                gap: 0.4rem;
+                margin-bottom: 1rem;
+            }
+            
+            .tag {
+                padding: 0.35rem 0.7rem;
+                font-size: 0.7rem;
+            }
+            
+            .noticia-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .section-header h2 {
+                font-size: 2rem;
+            }
+            
+            .hero {
+                padding: 3rem 1rem;
+            }
+            
+            .noticias-section {
+                padding: 3rem 1rem;
+            }
+            
+            .insights-section {
+                padding: 3rem 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+            
+            .hero p {
+                font-size: 0.95rem;
+            }
+            
+            .logo {
+                font-size: 1.2rem;
+            }
+            
+            nav ul {
+                gap: 0.5rem;
+                font-size: 0.8rem;
+            }
+            
+            .noticia-card {
+                padding: 1rem;
+            }
+            
+            .noticia-card h3 {
+                font-size: 1.2rem;
+            }
+            
+            .tags-container {
+                gap: 0.3rem;
+                margin-bottom: 0.8rem;
+            }
+            
+            .tag {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.65rem;
+            }
+            
+            .section-header h2 {
+                font-size: 1.5rem;
+            }
+            
+            .cta-button {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+            }
+            
+            .insight-item {
+                padding: 1.5rem;
+            }
+            
+            .insight-item h4 {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo">Valorem News Hub</div>
+            <nav>
+                <ul>
+                    <li><a href="#noticias">Noticias</a></li>
+                    <li><a href="#insights">Insights</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Noticias y Tendencias para Grupo Valorem</h1>
+        <p>Descubre las tendencias más relevantes en transformación digital, sostenibilidad, retail, medios y energía que impactan el portafolio diversificado del grupo.</p>
+        <button class="cta-button" onclick="document.getElementById('noticias').scrollIntoView({behavior: 'smooth'})">Explorar Noticias</button>
+    </section>
+
+    <!-- Noticias Section -->
+    <section id="noticias" class="noticias-section">
+        <div class="section-header">
+            <h2>Noticias Principales</h2>
+            <p>Actualizado - 20 de Mayo de 2026 (16 Noticias)</p>
+        </div>
+
+        <div class="noticias-grid">
+
+            <!-- Noticia 15 -->
+            <article class="noticia-card">
+                <h3>SURA Transforma Seguros con IA: Modelo Operativo Completo</h3>
+                <div class="tags-container">
+                    <span class="tag tag-empresa">Tiendas D1</span>
+                    <span class="tag tag-tecnologia">Inteligencia Artificial</span>
+                    <span class="tag tag-tecnologia">Automatización</span>
+                    <span class="tag tag-tecnologia">Copilot</span>
+                    <span class="tag tag-sector">Retail</span>
+                    <span class="tag tag-sector">Inversión social</span>
+                </div>
+                <p>SURA reestructura su modelo operativo completo con cuatro pilares: Hub SURA con APIs para conectar productos con partners, Microsoft Copilot Chat y Copilot 365 en fase de adopción, Índice de Madurez Digital para medir evolución, y formación certificada en IA (30+ colaboradores). Lo distintivo: SURA mide reducción de riesgo tecnológico, bajando de 24,46% a 19,88%. En seguros, la IA se concentra en atención al cliente, underwriting, gestión de siniestros, operación interna y gobierno de riesgo. Las aseguradoras buscan en startups: time-to-market acelerado, distribución embebida, automatización de siniestros y seguros por uso. <strong>Relevancia para Valorem:</strong> modelo de transformación digital integral aplicable a todas las unidades de negocio.</p>
+                <div class="noticia-meta">
+                    <span class="noticia-fuente">Latino Insurance</span>
+                    <span>20 may 2026</span>
+                </div>
+                <a href="https://boletines.latinoinsurance.com/sura-transforma-seguros-con-ia-lecciones-para-founders-insurtech?new=6233" target="_blank" class="noticia-link">Leer más →</a>
+            </article>
+
+            <!-- Noticia 16 -->
+            <article class="noticia-card">
+                <h3>Tupi Consolida Modelo Digital: 50% de Ventas ya son Digitales</h3>
+                <div class="tags-container">
+                    <span class="tag tag-empresa">Tiendas D1</span>
+                    <span class="tag tag-tecnologia">E-commerce</span>
+                    <span class="tag tag-tecnologia">Transformación Digital</span>
+                    <span class="tag tag-tecnologia">Omnicanalidad</span>
+                    <span class="tag tag-sector">Retail</span>
+                </div>
+                <p>Tupi, plataforma de retail digital, consolida su modelo con más del 50% de ventas ya digitales. "El e-commerce no es el futuro, es el presente", afirmó Ruth Bento, directora comercial de Tupi. La transformación tecnológica que impulsa la compañía demuestra que el e-commerce es el corazón del crecimiento del retail moderno. Tupi integra experiencias de compra física y digital, permitiendo que los clientes compren donde, cuándo y cómo prefieran. Este modelo omnicanal es clave para la competitividad en retail. <strong>Relevancia para Tiendas D1:</strong> acelerar transformación digital y omnicanalidad para capturar crecimiento en ventas digitales.</p>
+                <div class="noticia-meta">
+                    <span class="noticia-fuente">5Días</span>
+                    <span>20 may 2026</span>
+                </div>
+                <a href="https://5dias.com.py/tupi-consolida-su-modelo-digital-mas-del-50-de-sus-ventas-ya-son-digitales/" target="_blank" class="noticia-link">Leer más →</a>
+            </article>
+
+            <!-- Noticia 13 -->
+            <article class="noticia-card">
+                <h3>Colombia Traza su Ruta Digital hacia 2030</h3>
+                <div class="tags-container">
+                    <span class="tag tag-empresa">Tiendas D1</span>
+                    <span class="tag tag-empresa">Caracol Televisión</span>
+                    <span class="tag tag-empresa">Ditransa</span>
+                    <span class="tag tag-tecnologia">Inteligencia Artificial</span>
+                    <span class="tag tag-tecnologia">Transformación Digital</span>
+                    <span class="tag tag-tecnologia">Soberanía Tecnológica</span>
+                    <span class="tag tag-tecnologia">Inclusión Digital</span>
+                
+                    <span class="tag tag-sector">Medios y comunicación</span>
+                    <span class="tag tag-sector">Retail</span>
+                    <span class="tag tag-sector">Logística y transporte</span>
+                </div>
+                <p>En Colombia 5.0, el Gobierno presentó la Misión de Transformación Digital 2026-2030, una hoja de ruta estratégica para convertir la tecnología en herramienta de bienestar, productividad e inclusión. La Misión propone transformación profunda basada en: desarrollo de habilidades digitales, impulso a productividad y empleo, y fortalecimiento de soberanía tecnológica. Colombia entra oficialmente a Latam GPT, alianza liderada por Chile con 15+ países para construir el primer gran modelo de IA hecho en Latinoamérica. Se lanzó el Inclusive Digital Transformation Facility (IDTF) con PNUD y UE. <strong>Relevancia para Valorem:</strong> alineación con política pública de transformación digital y oportunidades de innovación colaborativa.</p>
+                <div class="noticia-meta">
+                    <span class="noticia-fuente">ACIS</span>
+                    <span>12 may 2026</span>
+                </div>
+                <a href="https://www.acis.org.co/blog/noticias-2/colombia-traza-su-ruta-digital-hacia-2030-una-mision-de-estado-para-cerrar-brechas-y-transformar-el-pais-8068" target="_blank" class="noticia-link">Leer más →</a>
+            </article>
+
+            <!-- Noticia 14 -->
+            <article class="noticia-card">
+                <h3>Superada Meta Digital - Más de 1 Millón de Colombianos Capacitados</h3>
+                <div class="tags-container">
+                    <span class="tag tag-empresa">Tiendas D1</span>
+                    <span class="tag tag-empresa">Caracol Televisión</span>
+                    <span class="tag tag-tecnologia">Inteligencia Artificial</span>
+                    <span class="tag tag-tecnologia">Formación Digital</span>
+                    <span class="tag tag-tecnologia">Ciberseguridad</span>
+                    <span class="tag tag-tecnologia">Educación Tecnológica</span>
+                
+                    <span class="tag tag-sector">Retail</span>
+                    <span class="tag tag-sector">Medios y comunicación</span>
+                </div>
+                <p>El Gobierno Petro superó la meta de formación en habilidades digitales: 1.020.181 colombianos capacitados en IA, ciberseguridad y analítica de datos. Además, 11.000 profesionales capacitados en tecnologías emergentes. Se conectaron 19.544 escuelas rurales (beneficiando 1,5 millones de estudiantes), entregaron 156.546 computadores, instalaron 3.252 laboratorios tecnológicos y distribuyeron 55.000 microcontroladores. Se abrió la primera Facultad de IA en América Latina (Manizales) y se desarrollan dos más (Zipaquirá y Usme). El programa CiberPaz sensibilizó a 3,4 millones de personas (41% mujeres). <strong>Relevancia para Valorem:</strong> acceso a talento capacitado en tecnologías emergentes para todas las unidades de negocio.</p>
+                <div class="noticia-meta">
+                    <span class="noticia-fuente">El Universal</span>
+                    <span>12 may 2026</span>
+                </div>
+                <a href="https://www.eluniversal.com.co/tecnologia/2026/05/12/superada-meta-digital-mas-de-un-millon-de-colombianos-capacitados-en-tecnologia/" target="_blank" class="noticia-link">Leer más →</a>
+            </article>
+
+            <!-- Noticia 12 -->
+            <article class="noticia-card">
+                <h3>Colombia se Posiciona como Referente Regional en IA e Innovación Digital</h3>
+                <div class="tags-container">
+                    <span class="tag tag-empresa">Caracol Televisión</span>
+                    <span class="tag tag-empresa">El Espectador</span>
+                    <span class="tag tag-empresa">Tiendas D1</span>
+                    <span class="tag tag-tecnologia">Inteligencia Artificial</span>
+                    <span class="tag tag-tecnologia">Transformación Digital</span>
+                    <span class="tag tag-tecnologia">Seguridad Digital</span>
+                    <span class="tag tag-tecnologia">Economía Digital</span>
+                
+                    <span class="tag tag-sector">Medios y comunicación</span>
+                    <span class="tag tag-sector">Retail</span>
+                </div>
+                <p>Colombia se consolida como referente regional en IA. El sector TIC aporta $58 billones al PIB (3,5% del valor agregado) y genera 370.000 empleos. Colombia ocupa el cuarto lugar en el Índice Latinoamericano de IA, abrió la primera Facultad de IA en América Latina y participa activamente en escenarios internacionales como OCDE y G7. La seguridad digital fue prioridad con inversión de $64.500 millones, gestionando 82.000 vulnerabilidades y cerrando 37.000 brechas críticas. Se lanzó GOV.CO 2.0 y ROBI, primer asistente virtual con IA del Estado. <strong>Relevancia para Valorem:</strong> posicionamiento estratégico en IA y transformación digital como factor competitivo clave.</p>
+                <div class="noticia-meta">
+                    <span class="noticia-fuente">Boyacá 7 Días</span>
+                    <span>11 may 2026</span>
+                </div>
+                <a href="https://boyaca7dias.com.co/2026/05/11/colombia-se-posiciona-como-referente-regional-en-inteligencia-artificial-e-innovacion-digital/" target="_blank" class="noticia-link">Leer más →</a>
+            </article>
+
+            <!-- Noticia 9 -->
+            <article class="noticia-card">
+                <h3>Tecnología y Seguridad: Fórmula para Productividad del Retail en Cali</h3>
+                <div class="tags-container">
+                    <span class="tag tag-empresa">Tiendas D1</span>
+                    <span class="tag tag-tecnologia">Inteligencia Artificial</span>
+                    <span class="tag tag-tecnologia">Análisis de Video</span>
+                    <span class="tag tag-tecnologia">Seguridad</span>
+                    <span class="tag tag-tecnologia">Radiocomunicación</span>
+                
+                    <span class="tag tag-sector">Retail</span>
+                
+                    <span class="tag tag-sector">Retail</span>
+                </div>
+                <p>Cali muestra crecimiento económico sostenido impulsado por recuperación del empleo y dinamismo del retail. IA y análisis de video transforman operaciones: cámaras inteligentes generan datos estratégicos sobre comportamiento del consumidor. Integración de videovigilancia + radiocomunicación permite respuesta inmediata a alertas. Sensores inteligentes detectan incidentes antes de ocurrir. Control de acceso biométrico fortalece seguridad en áreas críticas. <strong>Relevancia para Tiendas D1:</strong> implementar soluciones integradas de seguridad y IA para optimizar operaciones y experiencia del cliente.</p>
+                <div class="noticia-meta">
+                    <span class="noticia-fuente">Technocio</span>
+                    <span>4 may 2026</span>
+                </div>
+                <a href="https://www.technocio.com/tecnologia-y-seguridad-la-formula-para-impulsar-la-productividad-del-retail-en-cali/" target="_blank" class="noticia-link">Leer más →</a>
+            </article>
+
+            <!-- Noticia 10 -->
+            <article class="noticia-card">
+                <h3>IA Empresarial Impulsa Negocios en Colombia</h3>
+                <div class="tags-container">
+                    <span class="tag tag-empresa">Tiendas D1</span>
+                    <span class="tag tag-empresa">Caracol Televisión</span>
+                    <span class="tag tag-empresa">Ditransa</span>
+                    <span class="tag tag-tecnologia">Inteligencia Artificial</span>
+                    <span class="tag tag-tecnologia">Automatización Inteligente</span>
+                    <span class="tag tag-tecnologia">Agentes de IA</span>
+                
+                    <span class="tag tag-sector">Retail</span>
+                    <span class="tag tag-sector">Medios y comunicación</span>
+                    <span class="tag tag-sector">Logística y transporte</span>
+                </div>
+                <p>30-35% de empresas privadas en Colombia desarrollan iniciativas de IA. Sectores clave: banca, retail, telecomunicaciones, salud. 30% del tiempo de médicos se va en tareas administrativas que IA puede liberar. Automatización inteligente y agentes de IA transforman todas las áreas empresariales. Enfoque en optimizar procesos, reducir costos y aumentar productividad. <strong>Relevancia para Valorem:</strong> aceleración de transformación digital en todas las unidades de negocio mediante IA operativa.</p>
+                <div class="noticia-meta">
+                    <span class="noticia-fuente">ITenLINEA</span>
+                    <span>4 may 2026</span>
+                </div>
+                <a href="https://itenlinea.com/la-inteligencia-artificial-empresarial-impulsa-negocios/" target="_blank" class="noticia-link">Leer más →</a>
+            </article>
+
+            <!-- Noticia 11 -->
+            <article class="noticia-card">
+                <h3>IAB Day 2026: 15 Años Liderando Industria Digital</h3>
+                <div class="tags-container">
+                    <span class="tag tag-empresa">Caracol Televisión</span>
+                    <span class="tag tag-empresa">El Espectador</span>
+                    <span class="tag tag-tecnologia">Inteligencia Artificial</span>
+                    <span class="tag tag-tecnologia">Data Analytics</span>
+                    <span class="tag tag-tecnologia">Publicidad Digital</span>
+                    <span class="tag tag-tecnologia">Branded Content</span>
+                
+                    <span class="tag tag-sector">Medios y comunicación</span>
+                </div>
+                <p>IAB Day 2026 (28-29 mayo en Bogotá) es evento clave para industria digital. Branded content y formatos emergentes crecieron 60% en 2025. Video digital aumentó 13%. Agenda enfocada en IA como base del negocio, privacidad e identidad digital, innovación creativa, medición con datos. Participan expertos líderes. <strong>Relevancia para Caracol Televisión:</strong> estrategia de contenido digital, monetización, publicidad programática y transformación de modelo de negocio.</p>
+                <div class="noticia-meta">
+                    <span class="noticia-fuente">COPU</span>
+                    <span>4 may 2026</span>
+                </div>
+                <a href="https://copu.media/agendate-el-iab-day-2026-celebra-15-anos-liderando-la-industria-digital-con-dos-dias-de-pura-ia-data-y-networking-en-bogota/" target="_blank" class="noticia-link">Leer más →</a>
+            </article>
+
+            <!-- Noticia 1 -->
+            <article class="noticia-card">
+                <h3>60 Países en Santa Marta: Transición Energética Global</h3>
+                <div class="tags-container">
+                    <span class="tag tag-empresa">B Energy</span>
+                    <span class="tag tag-empresa">Gases del Caribe</span>
+                    <span class="tag tag-empresa">Refocosta</span>
+                    <span class="tag tag-tecnologia">Energías Renovables</span>
+                    <span class="tag tag-tecnologia">Sostenibilidad</span>
+                
+                    <span class="tag tag-sector">Energías renovables</span>
+                
+                    <span class="tag tag-sector">Energías renovables</span>
+                </div>
+                <p>Casi 60 gobiernos se reúnen en Santa Marta, Colombia, para avanzar hacia una salida de los combustibles fósiles. El evento organizado por Colombia y Países Bajos ocurre en medio del conflicto en Irán que expone la dependencia energética mundial. Participan países productores como Brasil, Canadá y Noruega, así como pequeños estados insulares amenazados por el calentamiento. Los científicos presentaron 12 medidas concretas, incluyendo "detener todo nuevo proyecto de extracción de infraestructuras para energías fósiles". Las emisiones alcanzaron máximo histórico en 2025. <strong>Relevancia para Valorem:</strong> B Energy, Gases del Caribe y Refocosta pueden posicionarse como actores clave en la transición energética colombiana.</p>
+                <div class="noticia-meta">
+                    <span class="noticia-fuente">AFP</span>
+                    <span>29 abr 2026</span>
+                </div>
+                <a href="https://es-us.noticias.yahoo.com/transici%C3%B3n-energ%C3%A9tica-debate-60-pa%C3%ADses-013634227.html" target="_blank" class="noticia-link">Leer más →</a>
+            </article>
+
+            <!-- Noticia 3 -->
+            <article class="noticia-card">
+                <h3>Medellín: Primera Comunidad Energética Solar de Colombia</h3>
+                <div class="tags-container">
+                    <span class="tag tag-empresa">B Energy</span>
+                    <span class="tag tag-empresa">Gases del Caribe</span>
+                    <span class="tag tag-tecnologia">Energía Solar</span>
+                    <span class="tag tag-tecnologia">Comunidades Energéticas</span>
+                    <span class="tag tag-tecnologia">Sostenibilidad</span>
+                
+                    <span class="tag tag-sector">Energías renovables</span>
+                
+                    <span class="tag tag-sector">Energías renovables</span>
+                </div>
+                <p>Medellín comenzó a operar la primera comunidad energética basada en paneles solares en Colombia, marcando un avance importante en transición energética. El proyecto, liderado por Unergy, se desarrolla en el barrio Laureles donde usuarios se benefician de energía generada en paneles solares instalados en oficinas. El modelo permite producir, compartir y consumir energía limpia sin que cada usuario deba instalar infraestructura propia. Los participantes reciben excedentes de energía, reduciendo sus facturas de electricidad. Empresas Públicas de Medellín (EPM) asume el rol de operador de red. <strong>Relevancia para Valorem:</strong> B Energy y Gases del Caribe pueden explorar modelos similares para expandir su base de clientes.</p>
+                <div class="noticia-meta">
+                    <span class="noticia-fuente">Paisa News</span>
+                    <span>29 abr 2026</span>
+                </div>
+                <a href="https://www.facebook.com/61575018103015/posts/medellin-ya-comenz%C3%B3-a-operar-la-primera-comunidad-energ%C3%A9tica-basada-en-paneles-s/122185871090833936" target="_blank" class="noticia-link">Leer más →</a>
+            </article>
+
+            <!-- Noticia 2 -->
+            <article class="noticia-card">
+                <h3>20+ Medios Latinoamericanos Implementan IA Operativa</h3>
+                <div class="tags-container">
+                    <span class="tag tag-empresa">Caracol Televisión</span>
+                    <span class="tag tag-empresa">El Espectador</span>
+                    <span class="tag tag-tecnologia">Inteligencia Artificial</span>
+                    <span class="tag tag-tecnologia">Automatización</span>
+                    <span class="tag tag-tecnologia">Procesamiento de Datos</span>
+                
+                    <span class="tag tag-sector">Medios y comunicación</span>
+                </div>
+                <p>Más de 20 medios de América Latina completaron el AI Product Lab (AIPL), iniciativa de la Sociedad Interamericana de Prensa (SIP) apoyada por Google News Initiative. Los medios implementaron soluciones concretas de IA que trascienden la experimentación, abordando desafíos de automatización de procesos, generación de nuevos ingresos y optimización de coberturas. El programa incluyó 12 sesiones formativas, talleres de prototipado intensivos y fondos de implementación. El Nacional incorporó "Perspectivas", herramienta que ofrece múltiples formas de consumir información. <strong>Relevancia para Valorem:</strong> Caracol Televisión puede replicar este modelo de innovación en IA para fortalecer su estrategia digital y monetización.</p>
+                <div class="noticia-meta">
+                    <span class="noticia-fuente">El Nacional / SIP</span>
+                    <span>28 abr 2026</span>
+                </div>
+                <a href="https://www.elnacional.com/2026/04/medios-latinoamericanos-implementan-soluciones-de-ia/" target="_blank" class="noticia-link">Leer más →</a>
+            </article>
+
+            <!-- Noticia 5 -->
+            <article class="noticia-card">
+                <h3>Colombia Hub Verde: US$34.000 Millones en Renovables</h3>
+                <div class="tags-container">
+                    <span class="tag tag-empresa">B Energy</span>
+                    <span class="tag tag-empresa">Gases del Caribe</span>
+                    <span class="tag tag-empresa">Refocosta</span>
+                    <span class="tag tag-tecnologia">Energías Renovables</span>
+                    <span class="tag tag-tecnologia">Economía Circular</span>
+                
+                    <span class="tag tag-sector">Energías renovables</span>
+                
+                    <span class="tag tag-sector">Energías renovables</span>
+                </div>
+                <p>Colombia se consolida como hub regional de inversión verde con un portafolio en energías renovables cercano a US$34.000 millones. GreenTech 2026 (6 de mayo) reunirá líderes empresariales, expertos internacionales y entidades públicas para fortalecer cooperación bilateral en energía, industria y gestión de recursos. Italia aporta experiencia en economía circular con ahorros de 16.400 millones de euros. La UE busca movilizar 300 millones de euros en inversión sostenible. <strong>Relevancia para Valorem:</strong> oportunidades en energías renovables, economía circular y soluciones sostenibles.</p>
+                <div class="noticia-meta">
+                    <span class="noticia-fuente">Portafolio</span>
+                    <span>27 abr 2026</span>
+                </div>
+                <a href="https://www.portafolio.co/sostenibilidad/inversion-verde-impulsa-a-colombia-como-hub-regional-con-capital-italiano-y-proyectos-por-mas-de-us-34-000-millones-492821" target="_blank" class="noticia-link">Leer más →</a>
+            </            <!-- Noticia 6 -->
+            <article class="noticia-card">
+                <h3>Ditu: Un Año de Crecimiento Digital en Streaming</h3>
+                <div class="tags-container">
+                    <span class="tag tag-empresa">Caracol Televisión</span>
+                    <span class="tag tag-tecnologia">Streaming</span>
+                    <span class="tag tag-tecnologia">Monetización Digital</span>
+                    <span class="tag tag-tecnologia">Contenido Multimedia</span>
+                
+                    <span class="tag tag-sector">Medios y comunicación</span>
+                </div>
+                <p><strong>Ditu</strong>, plataformaeaming de Caracol Televisión, reporta 11 millones de descargas y 65 millones de horas consumidas en su primer año. La estrategia se basa en contenido de calidad (noticias, novelas, realities, deportes), acceso gratuito y expansión a múltiples dispositivos (LG, Samsung, Android TV, Hisense, Roku). Se lanzó "Negocios DITU", primer canal 24/7 de economía en streaming en Colombia. La plataforma complementa (no sustituye) la televisión abierta. <strong>Relevancia para Caracol Televisión:</strong> expandir monetización de contenido, explorar nuevos canales temáticos y fortalecer presencia en plataformas tecnológicas.</p>
+                <div class="noticia-meta">
+                    <span class="noticia-fuente">PRODU</span>
+                    <span>27 abr 2026</span>
+                </div>
+                <a href="https://www.produ.com/television/noticias/ditu-primer-ano-crecimiento-estrategia-contenido-ernest-carreno/" target="_blank" class="noticia-link">Leer más →</a>
+            </article>
+
+            <!-- Noticia 4 -->
+            <article class="noticia-card">
+                <h3>eCommerce Day Colombia 2026: IA y Nuevos Canales</h3>
+                <div class="tags-container">
+                    <span class="tag tag-empresa">Tiendas D1</span>
+                    <span class="tag tag-empresa">Ditransa</span>
+                    <span class="tag tag-tecnologia">Inteligencia Artificial</span>
+                    <span class="tag tag-tecnologia">Omnicanalidad</span>
+                    <span class="tag tag-tecnologia">E-commerce</span>
+                
+                    <span class="tag tag-sector">Retail</span>
+                    <span class="tag tag-sector">Logística y transporte</span>
+                
+                    <span class="tag tag-sector">Retail</span>
+                    <span class="tag tag-sector">Logística y transporte</span>
+                </div>
+                <p>El eCommerce Day Colombia 2026 se realizará el 7 de mayo en Bogotá, reuniendo a CEOs, líderes de retail, marcas y expertos internacionales. Bajo el lema "Retail, Digital Channels & AI Revolution", la agenda abordará IA aplicada al negocio, omnicanalidad, marketplaces, retail media y social commerce. Incluye plenarias, workshops, eCommerce Award Colombia 2026 y eCommerce Startup Competition. <strong>Relevancia para Tiendas D1 (Koba Colombia):</strong> explorar tendencias en hard discount digital, omnicanalidad y automatización de procesos.</p>
+                <div class="noticia-meta">
+                    <span class="noticia-fuente">ENTER.CO</span>
+                    <span>22 abr 2026</span>
+                </div>
+                <a href="https://www.enter.co/transformacion-digital/ecommerce-day-colombia-2026-ia-y-nuevos-canales-marcan-la-agenda-del-sector/" target="_blank" class="noticia-link">Leer más →</a>
+            </article>
+
+            <!-- Noticia 7 -->
+            <article class="noticia-card">
+                <h3>Transformación Digital: Prioridades del Retail Colombiano</h3>
+                <div class="tags-container">
+                    <span class="tag tag-empresa">Tiendas D1</span>
+                    <span class="tag tag-empresa">Ditransa</span>
+                    <span class="tag tag-tecnologia">Inteligencia Artificial</span>
+                    <span class="tag tag-tecnologia">Análisis de Datos</span>
+                    <span class="tag tag-tecnologia">Cadena de Suministro</span>
+                
+                    <span class="tag tag-sector">Retail</span>
+                    <span class="tag tag-sector">Logística y transporte</span>
+                
+                    <span class="tag tag-sector">Retail</span>
+                    <span class="tag tag-sector">Logística y transporte</span>
+                </div>
+                <p><strong>CEOs priorizan</strong>as de suministro, acelerar adopción de IA y avanzar en sostenibilidad. El retail colombiano en 2025 muestra un mercado altamente competitivo donde la expansión en número de tiendas sigue siendo clave, pero la diferenciación ahora se logra mediante IA, omnicanalidad y experiencia del cliente. El análisis de datos en tiempo real permite decisiones más rápidas y precisas. La transformación digital ya no es opcional sino imperativa para competir. <strong>Relevancia para Tiendas D1:</strong> acelerar transformación digital, implementar IA en operaciones y mejorar experiencia omnicanal.</p>
+                <div class="noticia-meta">
+                    <span class="noticia-fuente">KPMG Business Insights</span>
+                    <span>abr 2026</span>
+                </div>
+                <a href="#" class="noticia-link">Leer más →</a>
+            </artic            <!-- Noticia 8 -->
+            <article class="noticia-card">
+                <h3>Falabella y Uniandes: Alianza en IA para Retail</h3>
+                <div class="tags-container">
+                    <span class="tag tag-empresa">Tiendas D1</span>
+                    <span class="tag tag-tecnologia">Inteligencia Artificial</span>
+                    <span class="tag tag-tecnologia">Ciencia de Datos</span>
+                    <span class="tag tag-tecnologia">Alianzas Académicas</span>
+                
+                    <span class="tag tag-sector">Retail</span>
+                
+                    <span class="tag tag-sector">Retail</span>
+                </div>
+                <p><strong>Falabella Colombia</strong>sidad de los Andes firman convenio de 5 años para desarrollar soluciones de IA y ciencia de datos aplicadas al retail. El enfoque incluye optimización de operaciones, personalización de experiencia del cliente y gestión inteligente de inventario. Las alianzas académicas aceleran innovación y permiten acceso a talento especializado. Este modelo demuestra la importancia de colaboraciones estratégicas entre empresas y universidades. <strong>Relevancia para Tiendas D1:</strong> explorar alianzas académicas similares para acelerar innovación en IA y ciencia de datos.</p>
+                <div class="noticia-meta">
+                    <span class="noticia-fuente">Area Cúcuta</span>
+                    <span>abr 2026</span>
+                </div>
+                <a href="#" class="noticia-link">Leer más →</a>
+            </article>
+        </div>
+    </section>
+
+    <!-- Insights Section -->
+    <section id="insights" class="insights-section">
+        <div class="section-header">
+            <h2>Insights Clave</h2>
+            <p>Análisis estratégico para líderes del Grupo Valorem</p>
+        </div>
+
+        <div class="insights-grid">
+            <div class="insight-item">
+                <h4>🚀 Transformación Digital Acelerada</h4>
+                <div class="tags-container">
+                    <span class="tag tag-empresa">Tiendas D1</span>
+                    <span class="tag tag-empresa">Caracol Televisión</span>
+                    <span class="tag tag-empresa">Ditransa</span>
+                    <span class="tag tag-tecnologia">IA</span>
+                    <span class="tag tag-tecnologia">Omnicanalidad</span>
+                </div>
+                <p>El retail, medios y logística en Colombia están experimentando una transformación digital masiva impulsada por IA, omnicanalidad y datos en tiempo real. La diferenciación competitiva ya no depende solo de expansión física sino de capacidades digitales.</p>
+            </div>
+
+            <div class="insight-item">
+                <h4>🌱 Sostenibilidad como Oportunidad</h4>
+                <div class="tags-container">
+                    <span class="tag tag-empresa">B Energy</span>
+                    <span class="tag tag-empresa">Gases del Caribe</span>
+                    <span class="tag tag-empresa">Refocosta</span>
+                    <span class="tag tag-tecnologia">Renovables</span>
+                    <span class="tag tag-tecnologia">Economía Circular</span>
+                </div>
+                <p>Colombia se posiciona como hub verde con inversión de US$34.000 millones en renovables. B Energy, Gases del Caribe y Refocosta tienen oportunidades estratégicas en energías limpias, economía circular y soluciones sostenibles.</p>
+            </div>
+
+            <div class="insight-item">
+                <h4>📺 Streaming y Contenido Digital</h4>
+                <div class="tags-container">
+                    <span class="tag tag-empresa">Caracol Televisión</span>
+                    <span class="tag tag-tecnologia">Streaming</span>
+                    <span class="tag tag-tecnologia">Monetización</span>
+                </div>
+                <p>Ditu demuestra que la integración de contenido tradicional con plataformas digitales genera valor masivo (11M descargas, 65M horas en 1 año). Caracol Televisión puede expandir monetización creando canales temáticos especializados.</p>
+            </div>
+
+            <div class="insight-item">
+                <h4>🔄 Omnicanalidad es Imperativa</h4>
+                <div class="tags-container">
+                    <span class="tag tag-empresa">Tiendas D1</span>
+                    <span class="tag tag-tecnologia">E-commerce</span>
+                    <span class="tag tag-tecnologia">Retail Digital</span>
+                </div>
+                <p>La coexistencia entre canales tradicionales y digitales no es competencia sino complementariedad que amplía alcance total. Tiendas D1 debe integrar experiencias físicas y digitales para maximizar valor.</p>
+            </div>
+
+            <div class="insight-item">
+                <h4>🤝 Alianzas Académicas Aceleran Innovación</h4>
+                <div class="tags-container">
+                    <span class="tag tag-empresa">Tiendas D1</span>
+                    <span class="tag tag-empresa">Caracol Televisión</span>
+                    <span class="tag tag-tecnologia">IA</span>
+                    <span class="tag tag-tecnologia">Ciencia de Datos</span>
+                </div>
+                <p>Las colaboraciones entre empresas y universidades (como Falabella-Uniandes) permiten acceso a talento especializado y aceleran desarrollo de soluciones de IA. Todas las unidades de negocio deben explorar modelos similares.</p>
+            </div>
+
+            <div class="insight-item">
+                <h4>💡 IA es Sistema Operativo, No Proyecto</h4>
+                <div class="tags-container">
+                    <span class="tag tag-empresa">Tiendas D1</span>
+                    <span class="tag tag-empresa">Caracol Televisión</span>
+                    <span class="tag tag-empresa">Ditransa</span>
+                    <span class="tag tag-tecnologia">IA</span>
+                    <span class="tag tag-tecnologia">Automatización</span>
+                </div>
+                <p>La IA ya no es un proyecto aislado sino un sistema operativo central que permea todas las operaciones. Desde automatización de procesos hasta personalización de experiencia, la IA es imperativa para competir.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Retos del Presente Section -->
+    <section id="retos" class="retos-section">
+        <div class="section-header">
+            <h2>Retos del Presente</h2>
+            <p>Señales de reformas, normativas y desafíos que impactan al Grupo Valorem</p>
+        </div>
+
+        <div class="retos-grid">
+            <div class="reto-item">
+                <h4>Reforma Tributaria 2026</h4>
+                <p><strong>Contexto:</strong> El Gobierno nacional presentó propuesta de reforma tributaria para frenar crisis fiscal.</p>
+                <p><strong>Cambios clave:</strong> Modificación de impuesto al patrimonio, eliminación de incentivos de ahorro en pensiones, aumento de impuesto de renta para asalariados.</p>
+                <p><strong>Impacto Valorem:</strong> Afecta estructura de costos laborales, beneficios de empleados y rentabilidad de inversiones.</p>
+            </div>
+
+            <div class="reto-item">
+                <h4>Reforma Laboral en Vigencia</h4>
+                <p><strong>Contexto:</strong> Ley 2466 de 2025 genera cambios operativos urgentes en todas las empresas.</p>
+                <p><strong>Cambios clave:</strong> Jornada laboral de 42 horas desde julio 2026, cambios en recargos nocturnos y beneficios laborales.</p>
+                <p><strong>Impacto Valorem:</strong> Requiere ajustes inmediatos en operación, contratación y costos de todas las unidades.</p>
+            </div>
+
+            <div class="reto-item">
+                <h4>Inseguridad y Orden Público</h4>
+                <p><strong>Contexto:</strong> Aumento de alertas por inseguridad, especialmente en Valle y Cauca. Contexto electoral genera volatilidad.</p>
+                <p><strong>Señales:</strong> Gobernanza criminal en barrios, candidatos bajo protección reforzada, operativos policiales continuos.</p>
+                <p><strong>Impacto Valorem:</strong> Afecta operaciones en retail, logística y seguridad de empleados y activos.</p>
+            </div>
+
+            <div class="reto-item">
+                <h4>Inflación Acelerada</h4>
+                <p><strong>Contexto:</strong> Inflación anual en 5.6% en marzo 2026, segunda más alta de OCDE. Proyecciones de aceleración a 6%+ en 2026.</p>
+                <p><strong>Señales:</strong> Banco Central mantiene tasa en 6%. Preocupación por credibilidad según Goldman Sachs.</p>
+                <p><strong>Impacto Valorem:</strong> Presión en márgenes, aumento de costos operacionales y presión en poder adquisitivo del consumidor.</p>
+            </div>
+
+            <div class="reto-item">
+                <h4>Tasas de Interés y Crédito</h4>
+                <p><strong>Contexto:</strong> Proyección de aumento en tasas de interés de créditos de vivienda y préstamos bancarios post-elecciones.</p>
+                <p><strong>Señales:</strong> Reserva Federal mantiene tasa en 4.25%-4.50%. Mercado anticipa volatilidad post-electoral.</p>
+                <p><strong>Impacto Valorem:</strong> Afecta proyectos inmobiliarios, financiamiento de operaciones y rentabilidad de inversiones.</p>
+            </div>
+
+            <div class="reto-item">
+                <h4>Empleo y Desempleo</h4>
+                <p><strong>Contexto:</strong> Tasa de desempleo en 8.8% en marzo 2026 (más baja desde registros). Sin embargo, 1.3M+ dejaron seguridad social.</p>
+                <p><strong>Señales:</strong> Preocupación por calidad del empleo, informalidad y sostenibilidad del crecimiento laboral.</p>
+                <p><strong>Impacto Valorem:</strong> Disponibilidad de talento, presión salarial y necesidad de capacitación digital.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p><strong>Valorem News Hub</strong> - Noticias y Tendencias para Grupo Valorem</p>
+            <p>Actualizado: 20 de Mayo de 2026 | 16 Noticias Principales</p>
+            <p style="margin-top: 1rem; font-size: 0.85rem; color: #999;">© 2026 Grupo Valorem. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>
